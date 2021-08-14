@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="MaintenanceEditDlg" widgetVar="MaintenanceEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.EditMaintenanceTitle}" closeOnEscape="true">
+
+            <h:form id="MaintenanceEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{maintenanceController.selected != null}">
+
+
+                        <h:outputLabel value="#{myBundle.EditMaintenanceLabel_idMaintenance}" for="idMaintenance" />
+                        <h:outputText id="idMaintenance" value="#{maintenanceController.selected.idMaintenance}" />
+
+                        <p:outputLabel value="#{myBundle.EditMaintenanceLabel_type}" for="type" />
+                        <p:inputText id="type" value="#{maintenanceController.selected.type}" title="#{myBundle.EditMaintenanceTitle_type}" size="45" maxlength="45"/>
+
+                        <p:outputLabel value="#{myBundle.EditMaintenanceLabel_description}" for="description" />
+                        <p:inputText id="description" value="#{maintenanceController.selected.description}" title="#{myBundle.EditMaintenanceTitle_description}" size="120" maxlength="120"/>
+
+                        <p:outputLabel value="#{myBundle.EditMaintenanceLabel_status}" for="status" />
+                        <p:selectBooleanCheckbox id="status" value="#{maintenanceController.selected.status}" />
+
+                        <p:outputLabel value="#{myBundle.EditMaintenanceLabel_supplyList}" for="supplyList" />
+                        <p:selectManyMenu id="supplyList" value="#{maintenanceController.selected.supplyList}"  converter="supplyConverter">
+                            <f:attribute name="collectionType" value="java.util.ArrayList"/>
+                            <f:selectItems value="#{supplyController.items}"
+                                           var="supplyListItem"
+                                           itemValue="#{supplyListItem}"
+                                           itemLabel="#{supplyListItem.description.toString()}"
+                                           />
+
+                        </p:selectManyMenu>
+
+                        <p:outputLabel value="#{myBundle.EditMaintenanceLabel_bookIdbook}" for="bookIdbook" />
+                        <p:selectOneMenu id="bookIdbook" value="#{maintenanceController.selected.bookIdbook}" required="true" requiredMessage="#{myBundle.EditMaintenanceRequiredMessage_bookIdbook}" converter="bookConverter">
+                            <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{bookController.items}"
+                                           var="bookIdbookItem"
+                                           itemValue="#{bookIdbookItem}"
+                                           itemLabel="#{bookIdbookItem.description.toString()}"
+                                           />
+
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{maintenanceController.save}" value="#{myBundle.Save}" update="display,:MaintenanceListForm:datalist,:MaintenanceListForm:MaintenanceDataTableContextMenu,:growl" oncomplete="handleSubmit(xhr,status,args,PF('MaintenanceEditDialog'));">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('MaintenanceEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

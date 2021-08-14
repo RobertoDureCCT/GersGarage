@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="MaintenanceViewDlg" widgetVar="MaintenanceViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.ViewMaintenanceTitle}" closeOnEscape="true">
+
+            <h:form id="MaintenanceViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{maintenanceController.selected != null}">
+
+                        <h:outputText value="#{myBundle.ViewMaintenanceLabel_idMaintenance}"/>
+                        <h:outputText value="#{maintenanceController.selected.idMaintenance}" title="#{myBundle.ViewMaintenanceTitle_idMaintenance}"/>
+
+                        <h:outputText value="#{myBundle.ViewMaintenanceLabel_type}"/>
+                        <h:outputText value="#{maintenanceController.selected.type}" title="#{myBundle.ViewMaintenanceTitle_type}"/>
+
+                        <h:outputText value="#{myBundle.ViewMaintenanceLabel_description}"/>
+                        <h:outputText value="#{maintenanceController.selected.description}" title="#{myBundle.ViewMaintenanceTitle_description}"/>
+
+                        <h:outputText value="#{myBundle.ViewMaintenanceLabel_status}"/>
+                        <p:selectBooleanCheckbox id="status" value="#{maintenanceController.selected.status}" />
+
+                        <h:outputText value="#{myBundle.ViewMaintenanceLabel_supplyList}"/>
+                        <p:selectManyMenu converter="supplyConverter">
+                            <f:attribute name="collectionType" value="java.util.ArrayList"/>
+                            <f:selectItems value="#{maintenanceController.selected.supplyList}"
+                                           var="supplyListItem"
+                                           itemValue="#{supplyListItem}"
+                                           itemLabel="#{supplyListItem.description.toString()}"
+                                           />
+
+                        </p:selectManyMenu>
+
+                        <h:outputText value="#{myBundle.ViewMaintenanceLabel_bookIdbook}"/>
+                        <h:outputText value="#{maintenanceController.selected.bookIdbook.description}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{myBundle.Close}" onclick="PF('MaintenanceViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

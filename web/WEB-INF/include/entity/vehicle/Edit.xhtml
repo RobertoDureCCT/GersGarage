@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="VehicleEditDlg" widgetVar="VehicleEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.EditVehicleTitle}" closeOnEscape="true">
+
+            <h:form id="VehicleEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{vehicleController.selected != null}">
+
+
+                        <h:outputLabel value="#{myBundle.EditVehicleLabel_idVehicle}" for="idVehicle" />
+                        <h:outputText id="idVehicle" value="#{vehicleController.selected.idVehicle}" />
+
+                        <p:outputLabel value="#{myBundle.EditVehicleLabel_make}" for="make" />
+                        <p:inputText id="make" value="#{vehicleController.selected.make}" title="#{myBundle.EditVehicleTitle_make}" size="45" maxlength="45"/>
+
+                        <p:outputLabel value="#{myBundle.EditVehicleLabel_model}" for="model" />
+                        <p:inputText id="model" value="#{vehicleController.selected.model}" title="#{myBundle.EditVehicleTitle_model}" size="45" maxlength="45"/>
+
+                        <p:outputLabel value="#{myBundle.EditVehicleLabel_engine}" for="engine" />
+                        <p:inputText id="engine" value="#{vehicleController.selected.engine}" title="#{myBundle.EditVehicleTitle_engine}" size="45" maxlength="45"/>
+
+                        <p:outputLabel value="#{myBundle.EditVehicleLabel_licence}" for="licence" />
+                        <p:inputText id="licence" value="#{vehicleController.selected.licence}" title="#{myBundle.EditVehicleTitle_licence}"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{vehicleController.save}" value="#{myBundle.Save}" update="display,:VehicleListForm:datalist,:VehicleListForm:VehicleDataTableContextMenu,:growl" oncomplete="handleSubmit(xhr,status,args,PF('VehicleEditDialog'));">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('VehicleEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

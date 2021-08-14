@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="UserViewDlg" widgetVar="UserViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.ViewUserTitle}" closeOnEscape="true">
+
+            <h:form id="UserViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{userController.selected != null}">
+
+                        <h:outputText value="#{myBundle.ViewUserLabel_idUser}"/>
+                        <h:outputText value="#{userController.selected.idUser}" title="#{myBundle.ViewUserTitle_idUser}"/>
+
+                        <h:outputText value="#{myBundle.ViewUserLabel_firstname}"/>
+                        <h:outputText value="#{userController.selected.firstname}" title="#{myBundle.ViewUserTitle_firstname}"/>
+
+                        <h:outputText value="#{myBundle.ViewUserLabel_surname}"/>
+                        <h:outputText value="#{userController.selected.surname}" title="#{myBundle.ViewUserTitle_surname}"/>
+
+                        <h:outputText value="#{myBundle.ViewUserLabel_password}"/>
+                        <h:outputText value="#{userController.selected.password}" title="#{myBundle.ViewUserTitle_password}"/>
+
+                        <h:outputText value="#{myBundle.ViewUserLabel_phone}"/>
+                        <h:outputText value="#{userController.selected.phone}" title="#{myBundle.ViewUserTitle_phone}"/>
+
+                        <h:outputText value="#{myBundle.ViewUserLabel_email}"/>
+                        <h:outputText value="#{userController.selected.email}" title="#{myBundle.ViewUserTitle_email}"/>
+
+                        <h:outputText value="#{myBundle.ViewUserLabel_address}"/>
+                        <h:outputText value="#{userController.selected.address}" title="#{myBundle.ViewUserTitle_address}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{myBundle.Close}" onclick="PF('UserViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

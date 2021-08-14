@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="MaintenanceViewPage" lazy="true">
+        <pm:header title="#{myBundle.ViewMaintenanceTitle}">
+            <h:form>
+                <p:commandButton styleClass="ui-btn-left ui-btn-inline" value="#{myBundle.Cancel}" icon="ui-icon-arrow-l" action="#{mobilePageController.navigateBackInHistory('pm:MaintenanceListPage')}"/>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="MaintenanceViewForm">
+
+                <h:panelGroup id="display">
+                    <p:outputPanel rendered="#{maintenanceController.selected != null}">
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewMaintenanceLabel_idMaintenance}"/>
+                            <h:outputText value="#{maintenanceController.selected.idMaintenance}" title="#{myBundle.ViewMaintenanceTitle_idMaintenance}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewMaintenanceLabel_type}"/>
+                            <h:outputText value="#{maintenanceController.selected.type}" title="#{myBundle.ViewMaintenanceTitle_type}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewMaintenanceLabel_description}"/>
+                            <h:outputText value="#{maintenanceController.selected.description}" title="#{myBundle.ViewMaintenanceTitle_description}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewMaintenanceLabel_status}"/>
+                            <h:selectBooleanCheckbox id="status" value="#{maintenanceController.selected.status}" title="#{myBundle.EditMaintenanceTitle_status}"  disabled="true"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewMaintenanceLabel_supplyList}"/>
+                            <h:selectManyMenu converter="supplyConverter">
+                                <f:selectItems value="#{maintenanceController.selected.supplyList}"
+                                               var="supplyListItem"
+                                               itemValue="#{supplyListItem}"
+                                               itemLabel="#{supplyListItem.description.toString()}"
+                                               />
+
+                            </h:selectManyMenu>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewMaintenanceLabel_bookIdbook}"/>
+                            <h:outputText value="#{maintenanceController.selected.bookIdbook.description}"/>
+                        </pm:field>
+                    </p:outputPanel>
+                </h:panelGroup>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="InvoiceEditDlg" widgetVar="InvoiceEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.EditInvoiceTitle}" closeOnEscape="true">
+
+            <h:form id="InvoiceEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{invoiceController.selected != null}">
+
+
+                        <h:outputLabel value="#{myBundle.EditInvoiceLabel_idInvoice}" for="idInvoice" />
+                        <h:outputText id="idInvoice" value="#{invoiceController.selected.idInvoice}" />
+
+                        <p:outputLabel value="#{myBundle.EditInvoiceLabel_maintenanceDescription}" for="maintenanceDescription" />
+                        <p:inputText id="maintenanceDescription" value="#{invoiceController.selected.maintenanceDescription}" title="#{myBundle.EditInvoiceTitle_maintenanceDescription}" size="45" maxlength="45"/>
+
+                        <p:outputLabel value="#{myBundle.EditInvoiceLabel_amount}" for="amount" />
+                        <p:inputText id="amount" value="#{invoiceController.selected.amount}" title="#{myBundle.EditInvoiceTitle_amount}" size="45" maxlength="45"/>
+
+                        <p:outputLabel value="#{myBundle.EditInvoiceLabel_maintenanceIdMaintenance}" for="maintenanceIdMaintenance" />
+                        <p:selectOneMenu id="maintenanceIdMaintenance" value="#{invoiceController.selected.maintenanceIdMaintenance}" required="true" requiredMessage="#{myBundle.EditInvoiceRequiredMessage_maintenanceIdMaintenance}" converter="maintenanceConverter">
+                            <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{maintenanceController.items}"
+                                           var="maintenanceIdMaintenanceItem"
+                                           itemValue="#{maintenanceIdMaintenanceItem}"
+                                           itemLabel="#{maintenanceIdMaintenanceItem.description.toString()}"
+                                           />
+
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{invoiceController.save}" value="#{myBundle.Save}" update="display,:InvoiceListForm:datalist,:InvoiceListForm:InvoiceDataTableContextMenu,:growl" oncomplete="handleSubmit(xhr,status,args,PF('InvoiceEditDialog'));">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('InvoiceEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

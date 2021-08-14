@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="VehicleCreateDlg" widgetVar="VehicleCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{myBundle.CreateVehicleTitle}" closeOnEscape="true">
+
+            <h:form id="VehicleCreateForm">
+
+                <h:panelGroup id="display" rendered="#{vehicleController.selected != null}">
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="#{myBundle.CreateVehicleLabel_idVehicle}" for="idVehicle" />
+                        <p:inputText id="idVehicle" value="#{vehicleController.selected.idVehicle}" title="#{myBundle.CreateVehicleTitle_idVehicle}" required="true" requiredMessage="#{myBundle.CreateVehicleRequiredMessage_idVehicle}"/>
+
+                        <p:outputLabel value="#{myBundle.CreateVehicleLabel_make}" for="make" />
+                        <p:inputText id="make" value="#{vehicleController.selected.make}" title="#{myBundle.CreateVehicleTitle_make}" size="45" maxlength="45"/>
+
+                        <p:outputLabel value="#{myBundle.CreateVehicleLabel_model}" for="model" />
+                        <p:inputText id="model" value="#{vehicleController.selected.model}" title="#{myBundle.CreateVehicleTitle_model}" size="45" maxlength="45"/>
+
+                        <p:outputLabel value="#{myBundle.CreateVehicleLabel_engine}" for="engine" />
+                        <p:inputText id="engine" value="#{vehicleController.selected.engine}" title="#{myBundle.CreateVehicleTitle_engine}" size="45" maxlength="45"/>
+
+                        <p:outputLabel value="#{myBundle.CreateVehicleLabel_licence}" for="licence" />
+                        <p:inputText id="licence" value="#{vehicleController.selected.licence}" title="#{myBundle.CreateVehicleTitle_licence}"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{vehicleController.saveNew}" value="#{myBundle.Save}" update="display,:VehicleListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('VehicleCreateDialog'));">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('VehicleCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="BookListPage">
+        <pm:header title="#{myBundle.ListBookTitle}">
+            <h:form>
+                <p:commandButton id="backButton"   styleClass="ui-btn-left  ui-btn-inline" icon="ui-icon-arrow-l" value="#{myBundle.Back}" action="#{mobilePageController.navigateBackInHistory('/mobile/index')}"/>
+                <p:commandButton id="createButton" styleClass="ui-btn-right ui-btn-inline" icon="ui-icon-plus"    value="#{myBundle.Create}" update=":BookCreatePage:BookCreateForm" actionListener="#{bookController.prepareCreate}" action="#{mobilePageController.navigateWithHistory('pm:BookCreatePage')}">
+                    <f:actionListener binding="#{currentPageListener}"/>
+                </p:commandButton>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="BookListForm">
+
+                <p:dataList id="datalist"
+                            paginator="true"
+                            rows="10"
+                            rowsPerPageTemplate="10,20,30,40,50"
+                            pt:data-inset="true"
+                            value="#{bookController.items}"
+                            var="item">
+
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListBookTitle}"/>
+                    </f:facet>
+
+                    <p:commandLink update=":BookEditPage:BookEditForm" action="pm:BookEditPage">
+                        <p>
+
+
+
+                            <h:outputText value="#{item.idbook}"/>
+
+
+
+                            ,&nbsp;
+                            <h:outputText value="#{item.service}"/>
+
+
+
+                            ,&nbsp;
+                            <h:outputText value="#{item.user}"/>
+
+
+
+                            ,&nbsp;
+                            <h:outputText value="#{item.vehicle}"/>
+
+
+
+                            ,&nbsp;
+                            <h:outputText value="#{item.date}">
+                                <f:convertDateTime pattern="MM/dd/yyyy" />
+                            </h:outputText>
+
+
+
+                            ,&nbsp;
+                            <h:outputText value="#{item.description}"/>
+
+
+                            <ui:remove>
+                                ,&nbsp;
+                                <h:outputText value="#{item.status}"/>
+                            </ui:remove>
+
+                            <ui:remove>
+                                ,&nbsp;
+                                <h:outputText value="#{item.userIdUser.firstname}"/>
+                            </ui:remove>
+
+                            <ui:remove>
+                                ,&nbsp;
+                                <h:outputText value="#{item.vehicleIdVehicle.idVehicle}"/>
+                            </ui:remove>
+
+                        </p>
+                        <f:setPropertyActionListener value="#{item}" target="#{bookController.selected}" />
+                    </p:commandLink>
+
+                    <f:facet name="footer">
+                        <h:outputText value="#{myBundle.ListBookTitle}"/>
+                    </f:facet>
+
+                </p:dataList>
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

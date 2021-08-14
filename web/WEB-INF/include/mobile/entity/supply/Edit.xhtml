@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="SupplyEditPage" lazy="true">
+        <pm:header title="#{myBundle.EditSupplyTitle}">
+            <h:form>
+                <p:commandButton styleClass="ui-btn-left ui-btn-inline" value="#{myBundle.Cancel}" icon="ui-icon-arrow-l" action="#{mobilePageController.navigateBackInHistory('pm:SupplyListPage')}"/>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="SupplyEditForm">
+
+                <h:panelGroup id="display">
+                    <p:outputPanel rendered="#{supplyController.selected != null}">
+
+                        <pm:field>
+                            <h:outputLabel value="#{myBundle.EditSupplyLabel_idSupply}" for="idSupply" />
+                            <h:outputText id="idSupply" value="#{supplyController.selected.idSupply}" />
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditSupplyLabel_description}" for="description" />
+                            <p:inputText id="description" value="#{supplyController.selected.description}" title="#{myBundle.EditSupplyTitle_description}" size="45" maxlength="45"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditSupplyLabel_brand}" for="brand" />
+                            <p:inputText id="brand" value="#{supplyController.selected.brand}" title="#{myBundle.EditSupplyTitle_brand}" size="45" maxlength="45"/>
+                        </pm:field>
+                    </p:outputPanel>
+                    <p:commandButton actionListener="#{supplyController.save}" value="#{myBundle.Save}" update="#{mobilePageController.updatableWidgets(component,'display,:SupplyListPage:SupplyListForm:datalist,:growl')}" action="#{mobilePageController.navigateWithHistory('pm:SupplyListPage')}"/>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

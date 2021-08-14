@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="BookCreatePage" lazy="true">
+        <pm:header title="#{myBundle.CreateBookTitle}">
+            <h:form>
+                <p:commandButton styleClass="ui-btn-left ui-btn-inline" value="#{myBundle.Cancel}" icon="ui-icon-arrow-l" action="#{mobilePageController.navigateBackInHistory('pm:BookListPage')}"/>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="BookCreateForm">
+
+                <h:panelGroup id="display" rendered="#{bookController.selected != null}">
+                    <p:outputPanel>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateBookLabel_idbook}" for="idbook" />
+                            <p:inputText id="idbook" value="#{bookController.selected.idbook}" title="#{myBundle.CreateBookTitle_idbook}" required="true" requiredMessage="#{myBundle.CreateBookRequiredMessage_idbook}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateBookLabel_service}" for="service" />
+                            <p:inputText id="service" value="#{bookController.selected.service}" title="#{myBundle.CreateBookTitle_service}" size="45" maxlength="45"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateBookLabel_user}" for="user" />
+                            <p:inputText id="user" value="#{bookController.selected.user}" title="#{myBundle.CreateBookTitle_user}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateBookLabel_vehicle}" for="vehicle" />
+                            <p:inputText id="vehicle" value="#{bookController.selected.vehicle}" title="#{myBundle.CreateBookTitle_vehicle}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateBookLabel_date}" for="date" />
+                            <p:calendar id="date" pattern="MM/dd/yyyy" value="#{bookController.selected.date}" title="#{myBundle.CreateBookTitle_date}"  showOn="button"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateBookLabel_description}" for="description" />
+                            <p:inputText id="description" value="#{bookController.selected.description}" title="#{myBundle.CreateBookTitle_description}" size="45" maxlength="45"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateBookLabel_status}" for="status" />
+                            <p:inputText id="status" value="#{bookController.selected.status}" title="#{myBundle.CreateBookTitle_status}" size="45" maxlength="45"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateBookLabel_userIdUser}" for="userIdUser" />
+                            <p:selectOneMenu id="userIdUser" value="#{bookController.selected.userIdUser}" required="true" requiredMessage="#{myBundle.CreateBookRequiredMessage_userIdUser}" converter="userConverter">
+                                <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                                <f:selectItems value="#{userController.items}"
+                                               var="userIdUserItem"
+                                               itemValue="#{userIdUserItem}"
+                                               itemLabel="#{userIdUserItem.firstname.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateBookLabel_vehicleIdVehicle}" for="vehicleIdVehicle" />
+                            <p:selectOneMenu id="vehicleIdVehicle" value="#{bookController.selected.vehicleIdVehicle}" required="true" requiredMessage="#{myBundle.CreateBookRequiredMessage_vehicleIdVehicle}" converter="vehicleConverter">
+                                <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                                <f:selectItems value="#{vehicleController.items}"
+                                               var="vehicleIdVehicleItem"
+                                               itemValue="#{vehicleIdVehicleItem}"
+                                               itemLabel="#{vehicleIdVehicleItem.idVehicle.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                        </pm:field>
+                    </p:outputPanel>
+                    <p:commandButton actionListener="#{bookController.saveNew}" value="#{myBundle.Save}" update="display,:BookListPage:BookListForm:datalist,:growl" action="#{mobilePageController.navigateWithHistory('pm:BookListPage')}"/>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

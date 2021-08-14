@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="InvoiceListForm">
+
+        <p:panel header="#{myBundle.ListInvoiceTitle}">
+            <p:contextMenu id="InvoiceDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{myBundle.Create}" onclick="document.getElementById('InvoiceListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{myBundle.View}" onclick="document.getElementById('InvoiceListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{myBundle.Edit}" onclick="document.getElementById('InvoiceListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{myBundle.Delete}" onclick="document.getElementById('InvoiceListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>
+                <p:menuitem value="#{myBundle.InvoiceMenuItem_maintenanceIdMaintenance}" icon="ui-icon-search"  actionListener="#{invoiceController.prepareMaintenanceIdMaintenance}" update=":MaintenanceViewForm" oncomplete="PF('MaintenanceViewDialog').show()" disabled="#{empty invoiceController.selected.maintenanceIdMaintenance}"/>  
+            </p:contextMenu>
+            <p:dataTable id="datalist"
+                         value="#{invoiceController.items}"
+                         lazy="false"
+                         rowKey="#{item.idInvoice}"
+                         var="item"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{invoiceController.selected}"
+                         filteredValue="#{invoiceController.filteredItems}">
+                <!--
+                         To enable Lazy Loading, please copy/replace the following lines above,
+                         and be sure to replace the word HASH with the # symbol:
+                
+                         value="HASH{invoiceController.lazyItems}"
+                         lazy="true"
+                         rowKey="HASH{item.idInvoice}"  <<< Remove this line
+                -->
+
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:InvoiceDataTableContextMenu" listener="#{invoiceController.resetParents}"/>
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:InvoiceDataTableContextMenu" listener="#{invoiceController.resetParents}"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:viewButton @form:editButton @form:deleteButton" listener="#{invoiceController.resetParents}"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('InvoiceListForm:viewButton').click();"/>
+
+                <p:column sortBy="#{item.idInvoice}" filterBy="#{item.idInvoice}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListInvoiceTitle_idInvoice}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.idInvoice}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.maintenanceDescription}" filterBy="#{item.maintenanceDescription}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListInvoiceTitle_maintenanceDescription}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.maintenanceDescription}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.amount}" filterBy="#{item.amount}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListInvoiceTitle_amount}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.amount}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.maintenanceIdMaintenance.description}" filterBy="#{item.maintenanceIdMaintenance.description}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListInvoiceTitle_maintenanceIdMaintenance}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.maintenanceIdMaintenance.description}"/>
+                </p:column>
+
+
+            </p:dataTable>
+
+            <p:commandButton id="createButton"                             icon="ui-icon-plus"   value="#{myBundle.Create}" actionListener="#{invoiceController.prepareCreate}" update=":InvoiceCreateForm" oncomplete="PF('InvoiceCreateDialog').show()"/>
+            <p:commandButton id="viewButton"   style="visibility: hidden;" icon="ui-icon-search" value="#{myBundle.View}" update=":InvoiceViewForm" oncomplete="PF('InvoiceViewDialog').show()" disabled="#{empty invoiceController.selected}"/>
+            <p:commandButton id="editButton"   style="visibility: hidden;" icon="ui-icon-pencil" value="#{myBundle.Edit}" update=":InvoiceEditForm" oncomplete="PF('InvoiceEditDialog').show()" disabled="#{empty invoiceController.selected}"/>
+            <p:commandButton id="deleteButton" style="visibility: hidden;" icon="ui-icon-trash"  value="#{myBundle.Delete}" actionListener="#{invoiceController.delete}" update=":growl,datalist" disabled="#{empty invoiceController.selected}">
+                <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+        </p:panel>
+        <ui:include src="/WEB-INF/include/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

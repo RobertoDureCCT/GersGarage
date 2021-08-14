@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="BookEditDlg" widgetVar="BookEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.EditBookTitle}" closeOnEscape="true">
+
+            <h:form id="BookEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{bookController.selected != null}">
+
+
+                        <h:outputLabel value="#{myBundle.EditBookLabel_idbook}" for="idbook" />
+                        <h:outputText id="idbook" value="#{bookController.selected.idbook}" />
+
+                        <p:outputLabel value="#{myBundle.EditBookLabel_service}" for="service" />
+                        <p:inputText id="service" value="#{bookController.selected.service}" title="#{myBundle.EditBookTitle_service}" size="45" maxlength="45"/>
+
+                        <p:outputLabel value="#{myBundle.EditBookLabel_user}" for="user" />
+                        <p:inputText id="user" value="#{bookController.selected.user}" title="#{myBundle.EditBookTitle_user}"/>
+
+                        <p:outputLabel value="#{myBundle.EditBookLabel_vehicle}" for="vehicle" />
+                        <p:inputText id="vehicle" value="#{bookController.selected.vehicle}" title="#{myBundle.EditBookTitle_vehicle}"/>
+
+                        <p:outputLabel value="#{myBundle.EditBookLabel_date}" for="date" />
+                        <p:calendar id="date" pattern="MM/dd/yyyy" value="#{bookController.selected.date}" title="#{myBundle.EditBookTitle_date}"  showOn="button"/>
+
+                        <p:outputLabel value="#{myBundle.EditBookLabel_description}" for="description" />
+                        <p:inputText id="description" value="#{bookController.selected.description}" title="#{myBundle.EditBookTitle_description}" size="45" maxlength="45"/>
+
+                        <p:outputLabel value="#{myBundle.EditBookLabel_status}" for="status" />
+                        <p:inputText id="status" value="#{bookController.selected.status}" title="#{myBundle.EditBookTitle_status}" size="45" maxlength="45"/>
+
+                        <p:outputLabel value="#{myBundle.EditBookLabel_userIdUser}" for="userIdUser" />
+                        <p:selectOneMenu id="userIdUser" value="#{bookController.selected.userIdUser}" required="true" requiredMessage="#{myBundle.EditBookRequiredMessage_userIdUser}" converter="userConverter">
+                            <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{userController.items}"
+                                           var="userIdUserItem"
+                                           itemValue="#{userIdUserItem}"
+                                           itemLabel="#{userIdUserItem.firstname.toString()}"
+                                           />
+
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="#{myBundle.EditBookLabel_vehicleIdVehicle}" for="vehicleIdVehicle" />
+                        <p:selectOneMenu id="vehicleIdVehicle" value="#{bookController.selected.vehicleIdVehicle}" required="true" requiredMessage="#{myBundle.EditBookRequiredMessage_vehicleIdVehicle}" converter="vehicleConverter">
+                            <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{vehicleController.items}"
+                                           var="vehicleIdVehicleItem"
+                                           itemValue="#{vehicleIdVehicleItem}"
+                                           itemLabel="#{vehicleIdVehicleItem.idVehicle.toString()}"
+                                           />
+
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{bookController.save}" value="#{myBundle.Save}" update="display,:BookListForm:datalist,:BookListForm:BookDataTableContextMenu,:growl" oncomplete="handleSubmit(xhr,status,args,PF('BookEditDialog'));">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('BookEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

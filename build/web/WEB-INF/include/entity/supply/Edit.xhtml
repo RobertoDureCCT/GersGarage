@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="SupplyEditDlg" widgetVar="SupplyEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.EditSupplyTitle}" closeOnEscape="true">
+
+            <h:form id="SupplyEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{supplyController.selected != null}">
+
+
+                        <h:outputLabel value="#{myBundle.EditSupplyLabel_idSupply}" for="idSupply" />
+                        <h:outputText id="idSupply" value="#{supplyController.selected.idSupply}" />
+
+                        <p:outputLabel value="#{myBundle.EditSupplyLabel_description}" for="description" />
+                        <p:inputText id="description" value="#{supplyController.selected.description}" title="#{myBundle.EditSupplyTitle_description}" size="45" maxlength="45"/>
+
+                        <p:outputLabel value="#{myBundle.EditSupplyLabel_brand}" for="brand" />
+                        <p:inputText id="brand" value="#{supplyController.selected.brand}" title="#{myBundle.EditSupplyTitle_brand}" size="45" maxlength="45"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{supplyController.save}" value="#{myBundle.Save}" update="display,:SupplyListForm:datalist,:SupplyListForm:SupplyDataTableContextMenu,:growl" oncomplete="handleSubmit(xhr,status,args,PF('SupplyEditDialog'));">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('SupplyEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

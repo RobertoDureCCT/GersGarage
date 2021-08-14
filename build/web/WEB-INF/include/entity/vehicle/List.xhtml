@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="VehicleListForm">
+
+        <p:panel header="#{myBundle.ListVehicleTitle}">
+            <p:contextMenu id="VehicleDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{myBundle.Create}" onclick="document.getElementById('VehicleListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{myBundle.View}" onclick="document.getElementById('VehicleListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{myBundle.Edit}" onclick="document.getElementById('VehicleListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{myBundle.Delete}" onclick="document.getElementById('VehicleListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>
+                <p:menuitem value="#{myBundle.VehicleMenuItem_bookList}" icon="ui-icon-search"  action="#{vehicleController.navigateBookList}" disabled="#{vehicleController.isBookListEmpty}" ajax="false"/>  
+            </p:contextMenu>
+            <p:dataTable id="datalist"
+                         value="#{vehicleController.items}"
+                         lazy="false"
+                         rowKey="#{item.idVehicle}"
+                         var="item"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{vehicleController.selected}"
+                         filteredValue="#{vehicleController.filteredItems}">
+                <!--
+                         To enable Lazy Loading, please copy/replace the following lines above,
+                         and be sure to replace the word HASH with the # symbol:
+                
+                         value="HASH{vehicleController.lazyItems}"
+                         lazy="true"
+                         rowKey="HASH{item.idVehicle}"  <<< Remove this line
+                -->
+
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:VehicleDataTableContextMenu"/>
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:VehicleDataTableContextMenu"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:viewButton @form:editButton @form:deleteButton"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('VehicleListForm:viewButton').click();"/>
+
+                <p:column sortBy="#{item.idVehicle}" filterBy="#{item.idVehicle}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListVehicleTitle_idVehicle}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.idVehicle}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.make}" filterBy="#{item.make}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListVehicleTitle_make}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.make}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.model}" filterBy="#{item.model}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListVehicleTitle_model}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.model}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.engine}" filterBy="#{item.engine}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListVehicleTitle_engine}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.engine}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.licence}" filterBy="#{item.licence}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListVehicleTitle_licence}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.licence}"/>
+                </p:column>
+
+
+            </p:dataTable>
+
+            <p:commandButton id="createButton"                             icon="ui-icon-plus"   value="#{myBundle.Create}" actionListener="#{vehicleController.prepareCreate}" update=":VehicleCreateForm" oncomplete="PF('VehicleCreateDialog').show()"/>
+            <p:commandButton id="viewButton"   style="visibility: hidden;" icon="ui-icon-search" value="#{myBundle.View}" update=":VehicleViewForm" oncomplete="PF('VehicleViewDialog').show()" disabled="#{empty vehicleController.selected}"/>
+            <p:commandButton id="editButton"   style="visibility: hidden;" icon="ui-icon-pencil" value="#{myBundle.Edit}" update=":VehicleEditForm" oncomplete="PF('VehicleEditDialog').show()" disabled="#{empty vehicleController.selected}"/>
+            <p:commandButton id="deleteButton" style="visibility: hidden;" icon="ui-icon-trash"  value="#{myBundle.Delete}" actionListener="#{vehicleController.delete}" update=":growl,datalist" disabled="#{empty vehicleController.selected}">
+                <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+        </p:panel>
+        <ui:include src="/WEB-INF/include/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

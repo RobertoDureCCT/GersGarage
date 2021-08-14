@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="MaintenanceEditPage" lazy="true">
+        <pm:header title="#{myBundle.EditMaintenanceTitle}">
+            <h:form>
+                <p:commandButton styleClass="ui-btn-left ui-btn-inline" value="#{myBundle.Cancel}" icon="ui-icon-arrow-l" action="#{mobilePageController.navigateBackInHistory('pm:MaintenanceListPage')}"/>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="MaintenanceEditForm">
+
+                <h:panelGroup id="display">
+                    <p:outputPanel rendered="#{maintenanceController.selected != null}">
+
+                        <pm:field>
+                            <h:outputLabel value="#{myBundle.EditMaintenanceLabel_idMaintenance}" for="idMaintenance" />
+                            <h:outputText id="idMaintenance" value="#{maintenanceController.selected.idMaintenance}" />
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditMaintenanceLabel_type}" for="type" />
+                            <p:inputText id="type" value="#{maintenanceController.selected.type}" title="#{myBundle.EditMaintenanceTitle_type}" size="45" maxlength="45"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditMaintenanceLabel_description}" for="description" />
+                            <p:inputText id="description" value="#{maintenanceController.selected.description}" title="#{myBundle.EditMaintenanceTitle_description}" size="120" maxlength="120"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditMaintenanceLabel_status}" for="status" />
+                            <p:selectBooleanCheckbox id="status" value="#{maintenanceController.selected.status}" />
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditMaintenanceLabel_supplyList}" for="supplyList" />
+                            <p:selectManyMenu id="supplyList" value="#{maintenanceController.selected.supplyList}"  converter="supplyConverter">
+                                <f:selectItems value="#{supplyController.items}"
+                                               var="supplyListItem"
+                                               itemValue="#{supplyListItem}"
+                                               itemLabel="#{supplyListItem.description.toString()}"
+                                               />
+
+                            </p:selectManyMenu>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditMaintenanceLabel_bookIdbook}" for="bookIdbook" />
+                            <p:selectOneMenu id="bookIdbook" value="#{maintenanceController.selected.bookIdbook}" required="true" requiredMessage="#{myBundle.EditMaintenanceRequiredMessage_bookIdbook}" converter="bookConverter">
+                                <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                                <f:selectItems value="#{bookController.items}"
+                                               var="bookIdbookItem"
+                                               itemValue="#{bookIdbookItem}"
+                                               itemLabel="#{bookIdbookItem.description.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                        </pm:field>
+                    </p:outputPanel>
+                    <p:commandButton actionListener="#{maintenanceController.save}" value="#{myBundle.Save}" update="#{mobilePageController.updatableWidgets(component,'display,:MaintenanceListPage:MaintenanceListForm:datalist,:growl')}" action="#{mobilePageController.navigateWithHistory('pm:MaintenanceListPage')}"/>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

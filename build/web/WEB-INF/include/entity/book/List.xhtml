@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="BookListForm">
+
+        <p:panel header="#{myBundle.ListBookTitle}">
+            <p:contextMenu id="BookDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{myBundle.Create}" onclick="document.getElementById('BookListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{myBundle.View}" onclick="document.getElementById('BookListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{myBundle.Edit}" onclick="document.getElementById('BookListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{myBundle.Delete}" onclick="document.getElementById('BookListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>
+                <p:menuitem value="#{myBundle.BookMenuItem_userIdUser}" icon="ui-icon-search"  actionListener="#{bookController.prepareUserIdUser}" update=":UserViewForm" oncomplete="PF('UserViewDialog').show()" disabled="#{empty bookController.selected.userIdUser}"/>  
+                <p:menuitem value="#{myBundle.BookMenuItem_vehicleIdVehicle}" icon="ui-icon-search"  actionListener="#{bookController.prepareVehicleIdVehicle}" update=":VehicleViewForm" oncomplete="PF('VehicleViewDialog').show()" disabled="#{empty bookController.selected.vehicleIdVehicle}"/>  
+                <p:menuitem value="#{myBundle.BookMenuItem_maintenanceList}" icon="ui-icon-search"  action="#{bookController.navigateMaintenanceList}" disabled="#{bookController.isMaintenanceListEmpty}" ajax="false"/>  
+            </p:contextMenu>
+            <p:dataTable id="datalist"
+                         value="#{bookController.items}"
+                         lazy="false"
+                         rowKey="#{item.idbook}"
+                         var="item"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{bookController.selected}"
+                         filteredValue="#{bookController.filteredItems}">
+                <!--
+                         To enable Lazy Loading, please copy/replace the following lines above,
+                         and be sure to replace the word HASH with the # symbol:
+                
+                         value="HASH{bookController.lazyItems}"
+                         lazy="true"
+                         rowKey="HASH{item.idbook}"  <<< Remove this line
+                -->
+
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:BookDataTableContextMenu" listener="#{bookController.resetParents}"/>
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:BookDataTableContextMenu" listener="#{bookController.resetParents}"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:viewButton @form:editButton @form:deleteButton" listener="#{bookController.resetParents}"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('BookListForm:viewButton').click();"/>
+
+                <p:column sortBy="#{item.idbook}" filterBy="#{item.idbook}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListBookTitle_idbook}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.idbook}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.service}" filterBy="#{item.service}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListBookTitle_service}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.service}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.user}" filterBy="#{item.user}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListBookTitle_user}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.user}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.vehicle}" filterBy="#{item.vehicle}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListBookTitle_vehicle}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.vehicle}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.date}" filterBy="#{item.date}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListBookTitle_date}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.date}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:outputText>
+                </p:column>
+
+
+                <p:column sortBy="#{item.description}" filterBy="#{item.description}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListBookTitle_description}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.description}"/>
+                </p:column>
+
+                <ui:remove>
+                    <p:column sortBy="#{item.status}" filterBy="#{item.status}">
+                        <f:facet name="header">
+                            <h:outputText value="#{myBundle.ListBookTitle_status}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.status}"/>
+                    </p:column>
+                </ui:remove>
+                <ui:remove>
+                    <p:column sortBy="#{item.userIdUser.firstname}" filterBy="#{item.userIdUser.firstname}">
+                        <f:facet name="header">
+                            <h:outputText value="#{myBundle.ListBookTitle_userIdUser}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.userIdUser.firstname}"/>
+                    </p:column>
+                </ui:remove>
+                <ui:remove>
+                    <p:column sortBy="#{item.vehicleIdVehicle.idVehicle}" filterBy="#{item.vehicleIdVehicle.idVehicle}">
+                        <f:facet name="header">
+                            <h:outputText value="#{myBundle.ListBookTitle_vehicleIdVehicle}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.vehicleIdVehicle.idVehicle}"/>
+                    </p:column>
+                </ui:remove>
+
+            </p:dataTable>
+
+            <p:commandButton id="createButton"                             icon="ui-icon-plus"   value="#{myBundle.Create}" actionListener="#{bookController.prepareCreate}" update=":BookCreateForm" oncomplete="PF('BookCreateDialog').show()"/>
+            <p:commandButton id="viewButton"   style="visibility: hidden;" icon="ui-icon-search" value="#{myBundle.View}" update=":BookViewForm" oncomplete="PF('BookViewDialog').show()" disabled="#{empty bookController.selected}"/>
+            <p:commandButton id="editButton"   style="visibility: hidden;" icon="ui-icon-pencil" value="#{myBundle.Edit}" update=":BookEditForm" oncomplete="PF('BookEditDialog').show()" disabled="#{empty bookController.selected}"/>
+            <p:commandButton id="deleteButton" style="visibility: hidden;" icon="ui-icon-trash"  value="#{myBundle.Delete}" actionListener="#{bookController.delete}" update=":growl,datalist" disabled="#{empty bookController.selected}">
+                <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+        </p:panel>
+        <ui:include src="/WEB-INF/include/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

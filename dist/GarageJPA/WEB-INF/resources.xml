@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+<Resource id="test" type="javax.sql.DataSource">#Fri Jul 02 15:57:11 WEST 2021
+jdbcDriver=com.mysql.jdbc.Driver
+password=root
+userName=root
+jdbcUrl=jdbc\:mysql\://localhost\:3306/mydb?useTimezone=true;serverTimezone=UTC
+</Resource>
+</resources>

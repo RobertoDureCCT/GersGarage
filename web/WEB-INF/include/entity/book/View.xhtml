@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="BookViewDlg" widgetVar="BookViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.ViewBookTitle}" closeOnEscape="true">
+
+            <h:form id="BookViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{bookController.selected != null}">
+
+                        <h:outputText value="#{myBundle.ViewBookLabel_idbook}"/>
+                        <h:outputText value="#{bookController.selected.idbook}" title="#{myBundle.ViewBookTitle_idbook}"/>
+
+                        <h:outputText value="#{myBundle.ViewBookLabel_service}"/>
+                        <h:outputText value="#{bookController.selected.service}" title="#{myBundle.ViewBookTitle_service}"/>
+
+                        <h:outputText value="#{myBundle.ViewBookLabel_user}"/>
+                        <h:outputText value="#{bookController.selected.user}" title="#{myBundle.ViewBookTitle_user}"/>
+
+                        <h:outputText value="#{myBundle.ViewBookLabel_vehicle}"/>
+                        <h:outputText value="#{bookController.selected.vehicle}" title="#{myBundle.ViewBookTitle_vehicle}"/>
+
+                        <h:outputText value="#{myBundle.ViewBookLabel_date}"/>
+                        <h:outputText value="#{bookController.selected.date}" title="#{myBundle.ViewBookTitle_date}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+
+                        <h:outputText value="#{myBundle.ViewBookLabel_description}"/>
+                        <h:outputText value="#{bookController.selected.description}" title="#{myBundle.ViewBookTitle_description}"/>
+
+                        <h:outputText value="#{myBundle.ViewBookLabel_status}"/>
+                        <h:outputText value="#{bookController.selected.status}" title="#{myBundle.ViewBookTitle_status}"/>
+
+                        <h:outputText value="#{myBundle.ViewBookLabel_userIdUser}"/>
+                        <h:outputText value="#{bookController.selected.userIdUser.firstname}"/>
+
+                        <h:outputText value="#{myBundle.ViewBookLabel_vehicleIdVehicle}"/>
+                        <h:outputText value="#{bookController.selected.vehicleIdVehicle.idVehicle}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{myBundle.Close}" onclick="PF('BookViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="InvoiceCreatePage" lazy="true">
+        <pm:header title="#{myBundle.CreateInvoiceTitle}">
+            <h:form>
+                <p:commandButton styleClass="ui-btn-left ui-btn-inline" value="#{myBundle.Cancel}" icon="ui-icon-arrow-l" action="#{mobilePageController.navigateBackInHistory('pm:InvoiceListPage')}"/>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="InvoiceCreateForm">
+
+                <h:panelGroup id="display" rendered="#{invoiceController.selected != null}">
+                    <p:outputPanel>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateInvoiceLabel_idInvoice}" for="idInvoice" />
+                            <p:inputText id="idInvoice" value="#{invoiceController.selected.idInvoice}" title="#{myBundle.CreateInvoiceTitle_idInvoice}" required="true" requiredMessage="#{myBundle.CreateInvoiceRequiredMessage_idInvoice}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateInvoiceLabel_maintenanceDescription}" for="maintenanceDescription" />
+                            <p:inputText id="maintenanceDescription" value="#{invoiceController.selected.maintenanceDescription}" title="#{myBundle.CreateInvoiceTitle_maintenanceDescription}" size="45" maxlength="45"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateInvoiceLabel_amount}" for="amount" />
+                            <p:inputText id="amount" value="#{invoiceController.selected.amount}" title="#{myBundle.CreateInvoiceTitle_amount}" size="45" maxlength="45"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateInvoiceLabel_maintenanceIdMaintenance}" for="maintenanceIdMaintenance" />
+                            <p:selectOneMenu id="maintenanceIdMaintenance" value="#{invoiceController.selected.maintenanceIdMaintenance}" required="true" requiredMessage="#{myBundle.CreateInvoiceRequiredMessage_maintenanceIdMaintenance}" converter="maintenanceConverter">
+                                <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                                <f:selectItems value="#{maintenanceController.items}"
+                                               var="maintenanceIdMaintenanceItem"
+                                               itemValue="#{maintenanceIdMaintenanceItem}"
+                                               itemLabel="#{maintenanceIdMaintenanceItem.description.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                        </pm:field>
+                    </p:outputPanel>
+                    <p:commandButton actionListener="#{invoiceController.saveNew}" value="#{myBundle.Save}" update="display,:InvoiceListPage:InvoiceListForm:datalist,:growl" action="#{mobilePageController.navigateWithHistory('pm:InvoiceListPage')}"/>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

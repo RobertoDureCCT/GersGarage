@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="VehicleViewPage" lazy="true">
+        <pm:header title="#{myBundle.ViewVehicleTitle}">
+            <h:form>
+                <p:commandButton styleClass="ui-btn-left ui-btn-inline" value="#{myBundle.Cancel}" icon="ui-icon-arrow-l" action="#{mobilePageController.navigateBackInHistory('pm:VehicleListPage')}"/>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="VehicleViewForm">
+
+                <h:panelGroup id="display">
+                    <p:outputPanel rendered="#{vehicleController.selected != null}">
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewVehicleLabel_idVehicle}"/>
+                            <h:outputText value="#{vehicleController.selected.idVehicle}" title="#{myBundle.ViewVehicleTitle_idVehicle}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewVehicleLabel_make}"/>
+                            <h:outputText value="#{vehicleController.selected.make}" title="#{myBundle.ViewVehicleTitle_make}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewVehicleLabel_model}"/>
+                            <h:outputText value="#{vehicleController.selected.model}" title="#{myBundle.ViewVehicleTitle_model}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewVehicleLabel_engine}"/>
+                            <h:outputText value="#{vehicleController.selected.engine}" title="#{myBundle.ViewVehicleTitle_engine}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewVehicleLabel_licence}"/>
+                            <h:outputText value="#{vehicleController.selected.licence}" title="#{myBundle.ViewVehicleTitle_licence}"/>
+                        </pm:field>
+                    </p:outputPanel>
+                </h:panelGroup>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

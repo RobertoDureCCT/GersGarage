@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="VehicleEditPage" lazy="true">
+        <pm:header title="#{myBundle.EditVehicleTitle}">
+            <h:form>
+                <p:commandButton styleClass="ui-btn-left ui-btn-inline" value="#{myBundle.Cancel}" icon="ui-icon-arrow-l" action="#{mobilePageController.navigateBackInHistory('pm:VehicleListPage')}"/>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="VehicleEditForm">
+
+                <h:panelGroup id="display">
+                    <p:outputPanel rendered="#{vehicleController.selected != null}">
+
+                        <pm:field>
+                            <h:outputLabel value="#{myBundle.EditVehicleLabel_idVehicle}" for="idVehicle" />
+                            <h:outputText id="idVehicle" value="#{vehicleController.selected.idVehicle}" />
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditVehicleLabel_make}" for="make" />
+                            <p:inputText id="make" value="#{vehicleController.selected.make}" title="#{myBundle.EditVehicleTitle_make}" size="45" maxlength="45"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditVehicleLabel_model}" for="model" />
+                            <p:inputText id="model" value="#{vehicleController.selected.model}" title="#{myBundle.EditVehicleTitle_model}" size="45" maxlength="45"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditVehicleLabel_engine}" for="engine" />
+                            <p:inputText id="engine" value="#{vehicleController.selected.engine}" title="#{myBundle.EditVehicleTitle_engine}" size="45" maxlength="45"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditVehicleLabel_licence}" for="licence" />
+                            <p:inputText id="licence" value="#{vehicleController.selected.licence}" title="#{myBundle.EditVehicleTitle_licence}"/>
+                        </pm:field>
+                    </p:outputPanel>
+                    <p:commandButton actionListener="#{vehicleController.save}" value="#{myBundle.Save}" update="#{mobilePageController.updatableWidgets(component,'display,:VehicleListPage:VehicleListForm:datalist,:growl')}" action="#{mobilePageController.navigateWithHistory('pm:VehicleListPage')}"/>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>
